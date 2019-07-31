@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -12,8 +13,8 @@ var UnixDomain = flag.Bool("unixdomain", false, "Use Unix domain sockets")
 var MsgSize = flag.Int("msgsize", 128, "Message size in each ping")
 var RspSize = flag.Int("rspsize", 128, "Response size in each ping")
 var NumPings = flag.Int("n", 50000, "Number of pings to measure")
+var TCPAddress = flag.String("tcpaddress", "127.0.0.1", "TCP address to bind to")
 
-var TcpAddress = "127.0.0.1:13500"
 var UnixAddress = "/tmp/benchmark.sock"
 
 // domainAndAddress returns the domain,address pair for net functions to connect
@@ -22,7 +23,7 @@ func domainAndAddress() (string, string) {
 	if *UnixDomain {
 		return "unix", UnixAddress
 	} else {
-		return "tcp", TcpAddress
+		return "tcp", strings.Join([]string{*TCPAddress, "13500"}, ":")
 	}
 }
 
