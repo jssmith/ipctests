@@ -60,7 +60,7 @@ func server() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if nwrite != *MsgSize {
+		if nwrite != *RspSize {
 			log.Fatalf("server: bad nwrite = %d", nwrite)
 		}
 	}
