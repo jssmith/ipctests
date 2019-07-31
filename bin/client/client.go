@@ -35,7 +35,7 @@ func domainAndAddress() (string, string) {
 
 func main() {
 	flag.Parse()
-	
+
 	time.Sleep(50 * time.Millisecond)
 
 	// This is the client code in the main goroutine.
