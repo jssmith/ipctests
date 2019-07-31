@@ -53,14 +53,14 @@ func main() {
 			log.Fatal(err)
 		}
 		if nwrite != *MsgSize {
-			log.Fatalf("bad nwrite = %d", nwrite)
+			log.Fatalf("client: bad nwrite = %d", nwrite)
 		}
 		nread, err := conn.Read(buf)
 		if err != nil {
 			log.Fatal(err)
 		}
 		if nread != *MsgSize {
-			log.Fatalf("bad nread = %d", nread)
+			log.Fatalf("client: bad nread = %d", nread)
 		}
 	}
 	elapsed := time.Since(t1)

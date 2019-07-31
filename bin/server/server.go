@@ -52,14 +52,14 @@ func server() {
 			log.Fatal(err)
 		}
 		if nread != *MsgSize {
-			log.Fatalf("bad nread = %d", nread)
+			log.Fatalf("server: bad nread = %d", nread)
 		}
 		nwrite, err := conn.Write(buf)
 		if err != nil {
 			log.Fatal(err)
 		}
 		if nwrite != *MsgSize {
-			log.Fatalf("bad nwrite = %d", nwrite)
+			log.Fatalf("server: bad nwrite = %d", nwrite)
 		}
 	}
 
