@@ -18,6 +18,7 @@ import (
 
 var UnixDomain = flag.Bool("unixdomain", false, "Use Unix domain sockets")
 var MsgSize = flag.Int("msgsize", 128, "Message size in each ping")
+var RspSize = flag.Int("rspsize", 128, "Message size in each ping")
 var NumPings = flag.Int("n", 50000, "Number of pings to measure")
 
 var TcpAddress = "127.0.0.1:13500"
@@ -56,7 +57,7 @@ func main() {
 			log.Fatalf("client: bad nwrite = %d", nwrite)
 		}
 		sumRead := 0
-		for sumRead < *MsgSize {
+		for sumRead < *RspSize {
 			nread, err := conn.Read(buf)
 			if err != nil {
 				log.Fatal(err)
@@ -66,11 +67,13 @@ func main() {
 	}
 	elapsed := time.Since(t1)
 
-	totalpings := int64(*NumPings * 2)
+	//totalpings := int64(*NumPings * 2)
 	fmt.Println("Client done")
-	fmt.Printf("%d pingpongs took %d ns; avg. latency %d ns\n",
-		totalpings, elapsed.Nanoseconds(),
-		elapsed.Nanoseconds()/totalpings)
+	fmt.Printf("%d pingpongs took %d ns; avg. latency %d ns; avg. thoughput %f GB/sec\n",
+		*NumPings, elapsed.Nanoseconds(),
+		elapsed.Nanoseconds()/int64(*NumPings),
+		float64(*MsgSize * *NumPings) / float64(elapsed.Nanoseconds()),
+		)
 
 	time.Sleep(50 * time.Millisecond)
 }

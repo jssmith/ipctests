@@ -10,6 +10,7 @@ import (
 
 var UnixDomain = flag.Bool("unixdomain", false, "Use Unix domain sockets")
 var MsgSize = flag.Int("msgsize", 128, "Message size in each ping")
+var RspSize = flag.Int("rspsize", 128, "Message size in each ping")
 var NumPings = flag.Int("n", 50000, "Number of pings to measure")
 
 var TcpAddress = "127.0.0.1:13500"
@@ -55,7 +56,7 @@ func server() {
 			}
 			sumRead += nread
 		}
-		nwrite, err := conn.Write(buf)
+		nwrite, err := conn.Write(buf[:*RspSize])
 		if err != nil {
 			log.Fatal(err)
 		}
