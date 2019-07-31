@@ -69,11 +69,11 @@ func main() {
 
 	//totalpings := int64(*NumPings * 2)
 	fmt.Println("Client done")
-	fmt.Printf("%d pingpongs took %d ns; avg. latency %d ns; avg. thoughput %f GB/sec\n",
+	fmt.Printf("%d pingpongs took %d ns; avg. rt latency %d ns; avg. thoughput %f GB/sec\n",
 		*NumPings, elapsed.Nanoseconds(),
 		elapsed.Nanoseconds()/int64(*NumPings),
-		float64(*MsgSize * *NumPings) / float64(elapsed.Nanoseconds()),
-		)
+		float64(*MsgSize * *NumPings) / elapsed.Seconds() / (1024 * 1024 * 1024),
+	)
 
 	time.Sleep(50 * time.Millisecond)
 }
