@@ -10,7 +10,7 @@ import (
 
 var UnixDomain = flag.Bool("unixdomain", false, "Use Unix domain sockets")
 var MsgSize = flag.Int("msgsize", 128, "Message size in each ping")
-var RspSize = flag.Int("rspsize", 128, "Message size in each ping")
+var RspSize = flag.Int("rspsize", 128, "Response size in each ping")
 var NumPings = flag.Int("n", 50000, "Number of pings to measure")
 
 var TcpAddress = "127.0.0.1:13500"
@@ -27,6 +27,9 @@ func domainAndAddress() (string, string) {
 }
 
 func server() {
+	if *RspSize > *MsgSize {
+		panic("response size exceeds message size")
+	}
 	if *UnixDomain {
 		if err := os.RemoveAll(UnixAddress); err != nil {
 			panic(err)

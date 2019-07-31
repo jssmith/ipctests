@@ -18,7 +18,7 @@ import (
 
 var UnixDomain = flag.Bool("unixdomain", false, "Use Unix domain sockets")
 var MsgSize = flag.Int("msgsize", 128, "Message size in each ping")
-var RspSize = flag.Int("rspsize", 128, "Message size in each ping")
+var RspSize = flag.Int("rspsize", 128, "Response size in each ping")
 var NumPings = flag.Int("n", 50000, "Number of pings to measure")
 
 var TcpAddress = "127.0.0.1:13500"
@@ -36,6 +36,10 @@ func domainAndAddress() (string, string) {
 
 func main() {
 	flag.Parse()
+
+	if *RspSize > *MsgSize {
+		panic("response size exceeds message size")
+	}
 
 	time.Sleep(50 * time.Millisecond)
 
@@ -69,7 +73,7 @@ func main() {
 
 	//totalpings := int64(*NumPings * 2)
 	fmt.Println("Client done")
-	fmt.Printf("%d pingpongs took %d ns; avg. rt latency %d ns; avg. thoughput %f GB/sec\n",
+	fmt.Printf("%d pingpongs took %d ns\navg. rt latency %d ns\navg. thoughput %f GB/sec\n",
 		*NumPings, elapsed.Nanoseconds(),
 		elapsed.Nanoseconds()/int64(*NumPings),
 		float64(*MsgSize * *NumPings) / elapsed.Seconds() / (1024 * 1024 * 1024),
