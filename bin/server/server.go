@@ -47,12 +47,13 @@ func server() {
 
 	buf := make([]byte, *MsgSize)
 	for n := 0; n < *NumPings; n++ {
-		nread, err := conn.Read(buf)
-		if err != nil {
-			log.Fatal(err)
-		}
-		if nread != *MsgSize {
-			log.Fatalf("server: bad nread = %d", nread)
+		sumRead := 0
+		for sumRead < *MsgSize {
+			nread, err := conn.Read(buf)
+			if err != nil {
+				log.Fatal(err)
+			}
+			sumRead += nread
 		}
 		nwrite, err := conn.Write(buf)
 		if err != nil {
